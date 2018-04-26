@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,15 +41,16 @@ public class LocalRepository extends DataRepository {
 
     public void createBooksCategory(ArrayList<CategoryListModel> result) {
         try {
-            Log.d("createBooksCategory", "LIST SIZE " + result.size());
-            Dao<CategoryListModel,Integer> booksCategoryDao = getHelper().getBooksCategoryDao();
-            App.getInstance().getApplicationContext().deleteDatabase("books.db");
-            /*DeleteBuilder<CategoryListModel, Integer> deleteBuilder = booksCategoryDao.deleteBuilder();
-            deleteBuilder.delete();*/
+            //Log.d("createBooksCategory", "LIST SIZE " + result.size());
+            Dao<CategoryListModel, Integer> booksCategoryDao = getHelper().getBooksCategoryDao();
 
+            DeleteBuilder<CategoryListModel, Integer> deleteBuilder = booksCategoryDao.deleteBuilder();
+            deleteBuilder.delete();
+            /*ArrayList<CategoryListModel> categoryList = (ArrayList<CategoryListModel>) booksCategoryDao.queryForAll();
+            Log.d("CategoryList Size===", "" + categoryList.size());*/
 
-                int bb = booksCategoryDao.create(result);
-                Log.d("LocalRepository", "InsertValue" + bb);
+            int insertedRows = booksCategoryDao.create(result);
+            Log.d("LocalRepository", "insertedRows" + insertedRows);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,7 +59,7 @@ public class LocalRepository extends DataRepository {
 
     private DatabaseHelper getHelper() {
         if (databaseHelper == null) {
-            databaseHelper = OpenHelperManager.getHelper(App.getInstance().getApplicationContext(),DatabaseHelper.class);
+            databaseHelper = OpenHelperManager.getHelper(App.getInstance().getApplicationContext(), DatabaseHelper.class);
         }
         return databaseHelper;
     }
@@ -65,7 +67,7 @@ public class LocalRepository extends DataRepository {
     @Override
     public Maybe<BooksCategoriesResponse> getBooksCategories() {
         try {
-            Dao<CategoryListModel,Integer> dao = getHelper().getBooksCategoryDao();
+            Dao<CategoryListModel, Integer> dao = getHelper().getBooksCategoryDao();
             ArrayList<CategoryListModel> categoryList = (ArrayList<CategoryListModel>) dao.queryForAll();
             Iterator<CategoryListModel> iterable = categoryList.iterator();
             Log.d("Local Repo", "List Size" + categoryList.size());
@@ -78,7 +80,7 @@ public class LocalRepository extends DataRepository {
 
                 @Override
                 public void subscribe(MaybeEmitter<BooksCategoriesResponse> e) throws Exception {
-                         e.onSuccess(booksCategoriesResponse);
+                    e.onSuccess(booksCategoriesResponse);
                 }
             });
         } catch (SQLException e) {
