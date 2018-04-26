@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--dimens for item_book_category-->
+    <!--dimens for item_book_list-->
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_album_radius">2dp</dimen>
     <dimen name="book_image_width">80dp</dimen>
     <dimen name="book_image_height">100dp</dimen>
     <dimen name="book_desc_padding">16dp</dimen>
+
+    <!--dimens for item_book_category-->
+    <dimen name="categor_image_width">80dp</dimen>
+    <dimen name="category_image_height">80dp</dimen>
+    <dimen name="category_name_max_width">120dp</dimen>
 </resources>
